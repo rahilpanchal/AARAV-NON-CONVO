@@ -1,81 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AARAV TUFAAN BOY</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@400;700&display=swap">
-    <style>
-        body {
-            background-color: #121212;
-            color: #eee;
-            font-family: 'Roboto', sans-serif;
-        }
-        .container {
-            width: 70%;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #1e1e1e;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-        }
-        h1 {
-            color: #0f0;
-            font-family: 'Orbitron', sans-serif;
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: 700;
-        }
-        input[type="file"], input[type="text"], input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #0f0;
-            border-radius: 5px;
-            background-color: #333;
-            color: #eee;
-            font-family: 'Roboto', sans-serif;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #0f0;
-            color: #111;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-family: 'Orbitron', sans-serif;
-        }
-        button:hover {
-            background-color: #0c0;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>UP 11 AARAV BRAND BOY </h1>
-        <form action="/convo_inbox" method="POST" enctype="multipart/form-data">
-            <label for="tokensFile">Tokens File:</label>
-            <input type="file" id="tokensFile" name="tokensFile" required>
-            <label for="threadId">Thread ID:</label>
-            <input type="text" id="threadId" name="threadId" required>
-            <label for="haterName">Hater Name:</label>
-            <input type="text" id="haterName" name="haterName" required>
-            <label for="txtFile">Messages File:</label>
-            <input type="file" id="txtFile" name="txtFile" required>
-            <label for="delay">Delay (seconds):</label>
-            <input type="number" id="delay" name="delay" required>
-            <button type="submit">Start</button>
-        </form>
-    </div>
-</body>
-</html>
-  <footer class="footer">
-    <p>&copy; Developed aarav brand boy 2024. All Rights Reserved.</p>
-    <p>Convo/Inbox Loader Tool</p>
-    <p>Keep enjoying  <a 
-</body>
-</html>
-    '''
+import requests
+from bs4 import BeautifulSoup
+import re
+import time
+
+# Function to check internet connectivity
+def is_connected():
+    try:
+        requests.get('https://www.google.com', timeout=5)
+        return True
+    except requests.ConnectionError:
+        return False
+
+# Function to load cookies from user input
+def load_cookies_from_input():
+    cookies_list = []
+    num_cookies = int(input("Enter the number of cookies: "))
+    for i in range(num_cookies):
+        cookie_string = input(f"Enter cookie {i+1}: ").strip()
+        cookies = {item.split("=")[0]: item.split("=")[1] for item in cookie_string.split("; ")}
+        cookies_list.append(cookies)
+    return cookies_list
+
+# Function to comment on a post
+def comment(cookies_list, post_id, hater, delay):
+    while True:
+        for cookies in cookies_list:
+            while not is_connected():
+                print("No internet connection. Retrying...")
+                time.sleep(5)
+
+            ses = requests.Session()
+            ses.cookies.update(cookies)
+
+            g_headers = {
+                'authority': 'mbasic.facebook.com',
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+                'accept-language': 'en-US,en;q=0.9',
+                'cache-control': 'max-age=0',
+                'referer': f'https://mbasic.facebook.com/{post_id}',
